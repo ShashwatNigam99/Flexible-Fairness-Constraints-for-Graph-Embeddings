@@ -1,0 +1,7 @@
+__pycache__
+./fb15k/*
+./knowledge_graph/
+*.zip
+./ml-1m/*
+./FB15K-237.2/*
+./results/*
