@@ -1,9 +1,13 @@
-### Dependencies ###
-NOTE: This code has been updated, if you were using this repo earlier and
-experienced issues that was due to an outaded codebase. Please try again, and
-if you're still stuck please send me an email: joey.bose@mail.mcgill.ca
+# Flexible Fairness Constraints for Graph Embeddings
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/drive/1A2N4yD59Q992NtbiIIuQLTPQeN_r0IjD?usp=sharing)
 
 Paper Link: https://arxiv.org/abs/1905.10674
+
+## Setup
+
+### Dependencies
+
 1. Comet ML for logging. You will need an API key, username, and project name to do online logging.
 2. Pytorch version=1.0
 3. scikit-learn
@@ -13,15 +17,31 @@ Paper Link: https://arxiv.org/abs/1905.10674
 7. joblib
 8. networkx for creating reddit graph
 
-To conduct experiments you will need to download the appropriate datasets and
-preprocess them with the given preprocesssing scripts. This will involve
-changing the file paths from their default ones. For FB15k-237 there is the
-main dataset as well as the entity types dataset (links are provided in the
-main paper). Further, note that reddit uses 2 steps of preprocessing,
-the first to parse the json objects and then a second
-one to create the K-core graph.
+### Datasets
 
-### Sample Commands ###
+- MovieLens-1M (suggested by the paper)
+
+Inside the repository folder :
+```bash
+# Download Dataset
+wget https://download.microsoft.com/download/8/7/0/8700516A-AB3D-4850-B4BB-805C515AECE1/FB15K-237.2.zip
+# Unzip Datasets
+unzip -qq ./FB15K-237.2.zip
+```
+- Freebase15k - 237 (new dataset, not tested in the paper)
+
+Inside the repository folder :
+```bash
+# Download Dataset
+wget --no-check-certificate https://files.grouplens.org/datasets/movielens/ml-1m.zip
+# Unzip Datasets
+unzip -qq ./ml-1m.zip
+# Renaming to match path specified in code
+mv Release fb15k
+```
+
+
+### Sample Commands
 To reproduce the results we provide sample commands. Command Line arguments
 control which sensitive attributes are use and whether there is a compositional
 adversary or not.
@@ -32,25 +52,8 @@ adversary or not.
 --use_attr=True --gamma=1000 --valid_freq=50`
 
 2. MovieLens1M:
-
 `ipython --pdb -- main_movielens.py --namestr='100 GCMC Comp and Dummy'
 --use_cross_entropy --num_epochs=200 --test_new_disc --use_1M=True
 --show_tqdm=True --report_bias=True --valid_freq=5 --use_gcmc=True
 --num_classifier_epochs=200 --embed_dim=30 --sample_mask=True --use_attr=True
 --gamma=10 --do_log`
-
-3. Reddit:
-
-`ipython --pdb -- main_reddit.py --namestr='Reddit Compositional No Held Out
-V2 Gamma=1' --valid_freq=5 --num_sensitive=10 --use_attr=True
---use_cross_entropy --test_new_disc --num_epochs=50 --num_nce=1
---sample_mask=True --debug --gamma=1000`
-
-If you use this codebase or ideas in the paper please cite:
-
-@article{bose2019compositional, \\
-  title={Compositional Fairness Constraints for Graph Embeddings},\\
-  author={Bose, Avishek Joey and Hamilton, William},\\
-  conference={Proceedings of the Thirty-sixth International Conference on Machine Learning, Long Beach CA},\\
-  year={2019} \\
-}
